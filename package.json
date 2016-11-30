@@ -1,0 +1,16 @@
+{
+  "name": "koaApplication",
+  "version": "1.0.0",
+  "description": "koa test project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Deddeep Chaudhuri",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^1.2.4",
+    "koa-router": "^5.4.0",
+    "nodemon": "^1.11.0"
+  }
+}
