@@ -7,7 +7,7 @@
     helloRoute=router();
     todoRoute=router();
     testRoute = router();
-    testRoute = router();
+
 
 
     testRoute.get('/Test/:id/:name',function* () {
@@ -15,7 +15,7 @@
         this.body='Koa Route is working fine' +' ID : ' + this.params.id + ' Name :' + this.params.name;
         console.log(this.request)
     });
-    testRoute.get('/notFound',function* () {
+    testRoute.get('/not_Found',function* () {
         this.status =404;
         this.body='Sorry requested resource not found';
         console.log('nnn')
@@ -37,16 +37,27 @@
     });
 
 
-
-
-    app.use(testRoute.routes());
-    app.use(helloRoute.routes());
-    app.use(todoRoute.routes());
+    //Error catching middleware
     app.use(function* (next) {
-        if(this.status !=400) return;
-        this.redirect('/notFound')
+        try{
+        yield  next;
+        }catch(err){
+        this.status=err.status || 500;
+        this.body=err.message;
+        this.app.emit('error',err,this);
+        }
     })
 
+    app.use(function* () {
+    this.throw('Custom error...',500)
+    })
+
+    app.use(testRoute.routes());
+    //app.use(helloRoute.routes());
+    //app.use(todoRoute.routes());
+
+
+    /*
     app.use(function* (next) {
         this.body='Hello World';
         yield next;
@@ -69,6 +80,15 @@
     app.use(function* () {
         this.body= this.body +' from KOA';
     });
+    */
+
+
+
+    app.use(function* (next) {
+        if(404 != this.status) return;
+        this.redirect('/not_Found')
+    })
+
 
 
     app.listen(3000,function () {
