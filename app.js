@@ -3,6 +3,13 @@
     var koa = require('koa');
     var app = koa();
 
+    var Pug = require('koa-pug');
+    var pug = new Pug({
+        viewPath: './views',
+        basedir: './views',
+        app: app //Equivalent to app.use(pug)
+    });
+
     var router = require('koa-router');
     helloRoute=router();
     todoRoute=router();
@@ -30,7 +37,7 @@
     });
 
     todoRoute.get('/Todo',function*() {
-        this.body='Todo from Koa... as GET Request';
+        this.render('Todo')
     });
     todoRoute.post('/Todo',function*() {
         this.body='Todo from Koa... as POST Request';
@@ -48,13 +55,13 @@
         }
     })
 
-    app.use(function* () {
+    /*app.use(function* () {
     this.throw('Custom error...',500)
-    })
+    })*/
 
     app.use(testRoute.routes());
     //app.use(helloRoute.routes());
-    //app.use(todoRoute.routes());
+    app.use(todoRoute.routes());
 
 
     /*
