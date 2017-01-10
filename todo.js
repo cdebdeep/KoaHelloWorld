@@ -31,10 +31,22 @@
 
     function *getFromDB(next) {
         var self =this;
-        yield Todo.find(function (err,response) {
+
+        //old syntax using mpromise
+        /*yield Todo.find(function (err,response) {
             todos=response;
             self.body=todos;
+        });*/
+
+        //using  Promises/A+ conformant promises
+        var promise = Todo.find();
+
+        yield promise.then(function (res) {
+            self.body=res;
+        }).catch(function (ex) {
+            self.body={message:'Error getting  Todo', type:'Error'}
         });
+
     }
     function *getByIdFromDB(next) {
         var self = this;
@@ -73,6 +85,7 @@
     function *putToDB(next) {
         var self = this;
         var todoInfo = self.request.body; //Get the parsed information
+
         if(!todoInfo.name || !todoInfo.id){
             this.response.status=400;
             this.body={message:'Bad Request'};
@@ -80,13 +93,14 @@
             var filter={};
             filter.id=todoInfo.id;
 
-           yield Todo.findOneAndUpdate(filter,{$set: {todoInfo}},function (err,res) {
-                if(err){
-                    self.body={message:'Error updating Todo', type:'Error'}
-                }else{
-                    self.body={message:'Success updating Todo', type:'Success',todo:todoInfo}
-                }
+           var Promise = Todo.findOneAndUpdate(filter,todoInfo);
+
+           yield Promise.then(function (res) {
+                self.body={message:'Success updating Todo', type:'Success',todo:res}
+            }).catch(function () {
+                self.body={message:'Error updating Todo', type:'Error'}
             })
+
         }
     }
     function *delFromDB(next) {

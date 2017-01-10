@@ -4,11 +4,13 @@
   "description": "koa test project",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --hot"
   },
   "author": "Deddeep Chaudhuri",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.15.3",
     "koa": "^1.2.4",
     "koa-body": "^1.6.0",
     "koa-logger": "^1.3.0",
@@ -16,6 +18,12 @@
     "koa-router": "^5.4.0",
     "mongoose": "^4.7.2",
     "nodemon": "^1.11.0",
-    "pug": "^2.0.0-beta6"
+    "pug": "^2.0.0-beta6",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-redux": "^5.0.1",
+    "redux": "^3.6.0",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
   }
 }
